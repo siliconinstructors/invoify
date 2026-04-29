@@ -174,6 +174,14 @@ const SingleItem = ({
                 />
 
                 <FormInput
+                    name={`${name}[${index}].sacHsn`}
+                    label="SAC/HSN"
+                    placeholder="121212"
+                    className="w-[8rem]"
+                    vertical
+                />
+
+                <FormInput
                     name={`${name}[${index}].unitPrice`}
                     type="number"
                     label={_t("form.steps.lineItems.rate")}

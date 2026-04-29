@@ -50,17 +50,22 @@ const BillFromSection = () => {
             <FormInput
                 name="sender.address"
                 label={_t("form.steps.fromAndTo.address")}
-                placeholder="Your address"
-            />
-            <FormInput
-                name="sender.zipCode"
-                label={_t("form.steps.fromAndTo.zipCode")}
-                placeholder="Your zip code"
+                placeholder="your address,-"
             />
             <FormInput
                 name="sender.city"
                 label={_t("form.steps.fromAndTo.city")}
-                placeholder="Your city"
+                placeholder="your city "
+            />
+            <FormInput
+                name="sender.state"
+                label="State"
+                placeholder="State"
+            />
+            <FormInput
+                name="sender.zipCode"
+                label="Pincode"
+                placeholder="600000"
             />
             <FormInput
                 name="sender.country"
@@ -84,6 +89,16 @@ const BillFromSection = () => {
                     const target = e.target as HTMLInputElement;
                     target.value = target.value.replace(/[^\d\+\-\(\)\s]/g, "");
                 }}
+            />
+            <FormInput
+                name="sender.gstin"
+                label="GSTIN"
+                placeholder="gst"
+            />
+            <FormInput
+                name="sender.pan"
+                label="PAN"
+                placeholder="pan"
             />
             {/* //? key = field.id fixes a bug where wrong field gets deleted  */}
             {fields?.map((field, index) => (

@@ -16,7 +16,7 @@ const fieldValidators = {
     address: z
         .string()
         .min(2, { message: "Must be at least 2 characters" })
-        .max(70, { message: "Must be between 2 and 70 characters" }),
+        .max(180, { message: "Must be between 2 and 180 characters" }),
     zipCode: z
         .string()
         .min(2, { message: "Must be between 2 and 20 characters" })
@@ -91,9 +91,12 @@ const InvoiceSenderSchema = z.object({
     address: fieldValidators.address,
     zipCode: fieldValidators.zipCode,
     city: fieldValidators.city,
+    state: fieldValidators.stringOptional,
     country: fieldValidators.country,
     email: fieldValidators.email,
     phone: fieldValidators.phone,
+    gstin: fieldValidators.stringOptional,
+    pan: fieldValidators.stringOptional,
     customInputs: z.array(CustomInputSchema).optional(),
 });
 
@@ -102,6 +105,7 @@ const InvoiceReceiverSchema = z.object({
     address: fieldValidators.address,
     zipCode: fieldValidators.zipCode,
     city: fieldValidators.city,
+    state: fieldValidators.stringOptional,
     country: fieldValidators.country,
     email: fieldValidators.email,
     phone: fieldValidators.phone,
@@ -110,6 +114,7 @@ const InvoiceReceiverSchema = z.object({
 
 const ItemSchema = z.object({
     name: fieldValidators.stringMin1,
+    sacHsn: fieldValidators.stringOptional,
     description: fieldValidators.stringOptional,
     quantity: fieldValidators.quantity,
     unitPrice: fieldValidators.unitPrice,
@@ -120,6 +125,12 @@ const PaymentInformationSchema = z.object({
     bankName: fieldValidators.stringMin1,
     accountName: fieldValidators.stringMin1,
     accountNumber: fieldValidators.stringMin1,
+    paymentMethod: fieldValidators.stringOptional,
+    accountCurrency: fieldValidators.stringOptional,
+    achRoutingNumber: fieldValidators.stringOptional,
+    fedwireRoutingNumber: fieldValidators.stringOptional,
+    accountType: fieldValidators.stringOptional,
+    beneficiaryAddress: fieldValidators.stringOptional,
 });
 
 const DiscountDetailsSchema = z.object({
@@ -149,6 +160,7 @@ const InvoiceDetailsSchema = z.object({
     invoiceDate: fieldValidators.date,
     dueDate: fieldValidators.date,
     purchaseOrderNumber: fieldValidators.stringOptional,
+    placeOfSupply: fieldValidators.stringOptional,
     currency: fieldValidators.string,
     language: fieldValidators.string,
     items: z.array(ItemSchema),

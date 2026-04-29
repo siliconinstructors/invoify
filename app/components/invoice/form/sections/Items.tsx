@@ -48,6 +48,7 @@ const Items = () => {
     const addNewField = () => {
         append({
             name: "",
+            sacHsn: "",
             description: "",
             quantity: 0,
             unitPrice: 0,
