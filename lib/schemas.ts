@@ -127,8 +127,7 @@ const PaymentInformationSchema = z.object({
     accountNumber: fieldValidators.stringMin1,
     paymentMethod: fieldValidators.stringOptional,
     accountCurrency: fieldValidators.stringOptional,
-    achRoutingNumber: fieldValidators.stringOptional,
-    fedwireRoutingNumber: fieldValidators.stringOptional,
+    ifscCode: fieldValidators.stringOptional,
     accountType: fieldValidators.stringOptional,
     beneficiaryAddress: fieldValidators.stringOptional,
 });

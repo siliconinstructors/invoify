@@ -107,9 +107,9 @@ const LogoMark = ({
         return (
             <img
                 src={logo}
-                height={90}
+                height={70}
                 alt={`Logo of ${senderName}`}
-                style={{ height: "90px", width: "auto", objectFit: "contain", objectPosition: "left" }}
+                style={{ height: "70px", width: "auto", objectFit: "contain", objectPosition: "left" }}
             />
         );
     }
@@ -117,12 +117,12 @@ const LogoMark = ({
     return (
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <svg
-                width="90"
-                height="90"
+                width="70"
+                height="70"
                 viewBox="0 0 201 201"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                style={{ flex: "0 0 auto" }}
+                style={{ flex: "0 0 auto", marginLeft: "-7px" }}
             >
                 <path
                     d="M22 23H102V84C102 92.284 108.716 99 117 99H178V179H98V118C98 109.716 91.284 103 83 103H22V23Z"
@@ -132,10 +132,12 @@ const LogoMark = ({
             <div
                 style={{
                     color: colors.brand,
-                    fontSize: 35,
-                    lineHeight: "42px",
+                    fontSize: 31,
+                    lineHeight: "30px",
                     fontWeight: 700,
                     textTransform: "uppercase",
+                    marginLeft: "-7px",
+                    marginTop: "-1px"
                 }}
             >
                 <div>SILICON</div>
@@ -340,8 +342,7 @@ const BankDetails = ({ details }: { details: InvoiceType["details"] }) => {
     return (
         <div style={{ color: colors.ink }}>
             <p style={{ color: colors.muted, fontSize: 12, margin: "0 0 6px" }}>
-                Pay via bank transfer&nbsp; (Note: This account only accepts {details.currency || "USD"}
-                payments)
+                Pay via bank transfer&nbsp; (Note: This account only accepts {details.currency || "USD"} payments)
             </p>
             <p style={{ color: colors.muted, fontSize: 12, margin: "0 0 5px" }}>
                 Bank details:
@@ -365,7 +366,7 @@ const BankDetails = ({ details }: { details: InvoiceType["details"] }) => {
                         height: 28,
                         borderRadius: 999,
                         background: "#fff",
-                        color: "#c52b2b",
+                        // color: "#00488d",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -374,17 +375,13 @@ const BankDetails = ({ details }: { details: InvoiceType["details"] }) => {
                         flex: "0 0 auto",
                     }}
                 >
-                    CFSB
+                    <img style={{ maxWidth: "50%" }} src="/assets/img/federalbank_logo.png" />
                 </div>
                 <div>
                     <BankLine label="Payment method" value={bank?.paymentMethod} />
                     <BankLine label="Account currency" value={bank?.accountCurrency} />
                     <BankLine label="Account number" value={bank?.accountNumber} />
-                    <BankLine label="ACH routing number" value={bank?.achRoutingNumber} />
-                    <BankLine
-                        label="Fedwire routing number"
-                        value={bank?.fedwireRoutingNumber}
-                    />
+                    <BankLine label="IFSC COde" value={bank?.ifscCode} />
                     <BankLine label="Account type" value={bank?.accountType} />
                     <BankLine label="Bank name" value={bank?.bankName} />
                     <BankLine
@@ -454,41 +451,113 @@ const Signature = ({
     </div>
 );
 
+const TotalsRow = ({
+    label,
+    value,
+    bold,
+}: {
+    label: string;
+    value: string;
+    bold?: boolean;
+}) => (
+    <div
+        style={{
+            display: "flex",
+            justifyContent: "space-between",
+            fontSize: 12,
+            color: colors.ink,
+            padding: "4px 0",
+            fontWeight: bold ? 700 : 400,
+        }}
+    >
+        <span>{label}</span>
+        <span>{value}</span>
+    </div>
+);
+
 const TotalsSection = ({ data }: { data: InvoiceType }) => {
     const { details } = data;
 
+    const taxLabel = (() => {
+        if (!details.taxDetails) return "Tax";
+        const { amount, amountType } = details.taxDetails;
+        return amountType === "percentage" ? `Tax (${amount}%)` : "Tax";
+    })();
+
     return (
         <div style={{ marginTop: 18 }}>
-            <div style={{ paddingTop: 12 }}>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
-                    }}
-                >
-                    <div style={{ width: 330 }}>
-                        <p
-                            style={{
-                                color: colors.muted,
-                                fontSize: 12,
-                                margin: "0 0 7px",
-                            }}
-                        >
-                            Total in words
-                        </p>
-                        <p
-                            style={{
-                                margin: 0,
-                                color: "#000",
-                                fontSize: 15,
-                                lineHeight: "18px",
-                            }}
-                        >
-                            {withOnly(details.totalAmountInWords)}
-                        </p>
-                    </div>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                }}
+            >
+                <div style={{ width: 330 }}>
+                    <p
+                        style={{
+                            color: colors.muted,
+                            fontSize: 12,
+                            margin: "0 0 7px",
+                        }}
+                    >
+                        Total in words
+                    </p>
+                    <p
+                        style={{
+                            margin: 0,
+                            color: "#000",
+                            fontSize: 15,
+                            lineHeight: "18px",
+                        }}
+                    >
+                        {withOnly(details.totalAmountInWords)}
+                    </p>
+                </div>
 
+                <div style={{ width: 266 }}>
+                    <TotalsRow
+                        label="Sub Total"
+                        value={formatNumberWithCommas(Number(details.subTotal))}
+                    />
+                    {details.discountDetails?.amount != undefined &&
+                        details.discountDetails.amount > 0 && (
+                            <TotalsRow
+                                label="Discount"
+                                value={`- ${formatNumberWithCommas(
+                                    details.discountDetails.amountType === "percentage"
+                                        ? (Number(details.subTotal) * Number(details.discountDetails.amount)) / 100
+                                        : Number(details.discountDetails.amount)
+                                )}`}
+                            />
+                        )}
+                    {details.taxDetails?.amount != undefined &&
+                        details.taxDetails.amount > 0 && (
+                            <TotalsRow
+                                label={taxLabel}
+                                value={formatNumberWithCommas(
+                                    details.taxDetails.amountType === "percentage"
+                                        ? (Number(details.subTotal) * Number(details.taxDetails.amount)) / 100
+                                        : Number(details.taxDetails.amount)
+                                )}
+                            />
+                        )}
+                    {details.shippingDetails?.cost != undefined &&
+                        details.shippingDetails.cost > 0 && (
+                            <TotalsRow
+                                label="Shipping"
+                                value={formatNumberWithCommas(
+                                    details.shippingDetails.costType === "percentage"
+                                        ? (Number(details.subTotal) * Number(details.shippingDetails.cost)) / 100
+                                        : Number(details.shippingDetails.cost)
+                                )}
+                            />
+                        )}
+                    <TotalsRow
+                        label="Total"
+                        value={`${details.currency} ${formatNumberWithCommas(Number(details.totalAmount))}`}
+                        bold
+                    />
                     <div
                         style={{
                             width: 266,
@@ -502,6 +571,7 @@ const TotalsSection = ({ data }: { data: InvoiceType }) => {
                             padding: "0 15px 0 88px",
                             fontSize: 15,
                             fontWeight: 700,
+                            marginTop: 6,
                         }}
                     >
                         <span>Total</span>
@@ -567,7 +637,7 @@ const Page = ({
                                 />
                                 <div
                                     style={{
-                                        marginTop: -5,
+                                        marginTop: 5,
                                         color: colors.ink,
                                         fontSize: 13,
                                         lineHeight: "19px",
@@ -631,8 +701,8 @@ const Page = ({
                         <div
                             style={{
                                 borderTop: `1px solid ${colors.rule}`,
-                                marginTop: 30,
-                                paddingTop: 30,
+                                marginTop: 20,
+                                paddingTop: 20,
                             }}
                         >
                             <p

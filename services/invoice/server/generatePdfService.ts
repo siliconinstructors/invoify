@@ -29,7 +29,8 @@ export async function generatePdfService(req: NextRequest) {
 		const ReactDOMServer = (await import("react-dom/server")).default;
 		const templateId = body.details.pdfTemplate;
 		const InvoiceTemplate = await getInvoiceTemplate(templateId);
-		const htmlTemplate = ReactDOMServer.renderToStaticMarkup(
+		const baseUrl = req.nextUrl.origin;
+		const htmlTemplate = `<base href="${baseUrl}/">` + ReactDOMServer.renderToStaticMarkup(
 			InvoiceTemplate(body)
 		);
 

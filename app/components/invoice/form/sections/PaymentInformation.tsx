@@ -43,21 +43,15 @@ const PaymentInformation = () => {
                     vertical
                 />
                 <FormInput
-                    name="details.paymentInformation.achRoutingNumber"
-                    label="ACH routing number"
-                    placeholder="ACH routing number"
-                    vertical
-                />
-                <FormInput
-                    name="details.paymentInformation.fedwireRoutingNumber"
-                    label="Fedwire routing number"
-                    placeholder="Fedwire routing number"
+                    name="details.paymentInformation.ifscCode"
+                    label="IFSC Code"
+                    placeholder="IFSC Code"
                     vertical
                 />
                 <FormInput
                     name="details.paymentInformation.accountType"
                     label="Account type"
-                    placeholder="Business checking account"
+                    placeholder="Current account"
                     vertical
                 />
                 <FormInput
