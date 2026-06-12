@@ -48,6 +48,12 @@ const InvoiceDetails = () => {
                         label={_t("form.steps.invoiceDetails.dueDate")}
                     />
 
+                    <FormInput
+                        name="details.paymentTerms"
+                        label="Payment terms"
+                        placeholder="20"
+                    />
+
                     <CurrencySelector
                         name="details.currency"
                         label={_t("form.steps.invoiceDetails.currency")}

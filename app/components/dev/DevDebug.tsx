@@ -11,6 +11,7 @@ import { BaseButton } from "@/app/components";
 
 // Variables
 import { FORM_FILL_VALUES } from "@/lib/variables";
+import { FORM_FILL_VALUES as SI_VALUES } from "@/lib/variables.si";
 
 type DevDebugProps = {};
 
@@ -24,7 +25,7 @@ const DevDebug = ({}: DevDebugProps) => {
                 <BaseButton
                     tooltipLabel="Form Test Fill"
                     variant="outline"
-                    onClick={() => reset(FORM_FILL_VALUES)}
+                    onClick={() => reset(SI_VALUES)}
                 >
                     Fill in the form
                 </BaseButton>
@@ -33,6 +34,7 @@ const DevDebug = ({}: DevDebugProps) => {
             <div className="flex flex-col">
                 <Link href={`/template/1`}>Template 1</Link>
                 <Link href={`/template/2`}>Template 2</Link>
+                <Link href={`/template/3`}>Template 3</Link>
             </div>
         </div>
     );
